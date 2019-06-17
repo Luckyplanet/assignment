@@ -1,0 +1,37 @@
+<h1>Secret Codes</h1>
+
+<%if @secret_codes.exists? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>Code String</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @secret_codes.each do |secret_code| %>
+        <tr>
+          <td><%= secret_code.user_email %></td>
+          <td><%= secret_code.code_string %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-info">
+    <strong>Info!</strong> Secret Codes not found.
+  </div>
+<% end %>
+
+<h1>Generate Secret Codes</h1>
+<%= form_for :secret_code, url: generate_secret_codes_path, method: :get do |f|%>
+  <div class="col-md-3">
+    <div class="form-group">
+      <label>Select:</label>
+      <%= f.select :limit, options_for_select(pagination_config, "10"), {}, {class: 'form-control'} %>
+    </div>
+    <div class="form-group">
+    <%= f.submit "Generate", class: 'btn btn-success' %>
+  </div>
+  </div>
+<% end %>
